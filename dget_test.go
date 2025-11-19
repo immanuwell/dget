@@ -20,6 +20,10 @@ func TestCommandOutput(t *testing.T) {
 			Output: "[example.com example.net test.com test.net]"},
 		{Cmd: exec.Command("go", "run", ".", "--base", "example,test", "--tld", "com", "--tld", "net", "--debug"),
 			Output: "[example.com example.net test.com test.net]"},
+		{Cmd: exec.Command("go", "run", ".", "--domains-file", "domains-file.txt", "--tld", "com", "--debug"),
+			Output: "[zero.com new-domain.com djkflsdl.com]"},
+		{Cmd: exec.Command("go", "run", ".", "--domains-file", "domains-file.txt", "--tld-file", "tlds-file.txt", "--debug"),
+			Output: "[zero.com zero.net zero.org zero.io zero.co new-domain.com new-domain.net new-domain.org new-domain.io new-domain.co djkflsdl.com djkflsdl.net djkflsdl.org djkflsdl.io djkflsdl.co]"},
 	}
 
 	for _, item := range commands {
