@@ -1,0 +1,8 @@
+dget
+*.exe
+*.out
+*.test
+*.dll
+*.so
+*.dylib
+

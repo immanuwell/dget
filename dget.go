@@ -332,7 +332,7 @@ func printUsageExamples() {
 }
 
 func printHelp() {
-	fmt.Println("Domain Availability Checker")
+	fmt.Println("dget — Domain Availability Checker")
 	fmt.Println("\nUsage:")
 	fmt.Println("  dget [options] [domain]")
 	fmt.Println()
