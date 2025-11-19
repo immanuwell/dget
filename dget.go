@@ -301,7 +301,22 @@ func getWhoisServer(domain string) string {
 }
 
 func printUsageExamples() {
-	fmt.Println("Domain Availability Checker")
+	fmt.Println("                                          ")
+    fmt.Println("        /$$                       /$$     ")
+    fmt.Println("       | $$                      | $$     ")
+    fmt.Println("   /$$$$$$$  /$$$$$$   /$$$$$$  /$$$$$$   ")
+    fmt.Println("  /$$__  $$ /$$__  $$ /$$__  $$|_  $$_/   ")
+    fmt.Println(" | $$  | $$| $$  \\ $$| $$$$$$$$  | $$     ")
+    fmt.Println(" | $$  | $$| $$  | $$| $$_____/  | $$ /$$ ")
+    fmt.Println(" |  $$$$$$$|  $$$$$$$|  $$$$$$$  |  $$$$/ ")
+    fmt.Println("  \\_______/ \\____  $$ \\_______/   \\___/   ") 
+    fmt.Println("            /$$  \\ $$                     ")
+    fmt.Println("           |  $$$$$$/                     ")
+    fmt.Println("            \\______/                      ")
+    fmt.Println("                                          ")
+
+
+	fmt.Println("dget — Domain Availability Checker")
 	fmt.Println("\nNo domains specified. Here are some usage examples:")
 	fmt.Println()
 	fmt.Println("Examples:")
