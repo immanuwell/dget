@@ -64,7 +64,15 @@ go install github.com/immanuwell/dget@latest
 
 ## Example of usage
 
-![](dget_screencast.gif)
+![](media/screenshot-1.png)
+
+![](media/screenshot-2.png)
+
+![](media/screenshot-3.png)
+
+![](media/screenshot-4.png)
+
+![](media/dget_screencast.gif)
 
 
 
