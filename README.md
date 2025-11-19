@@ -62,6 +62,10 @@ File Formats:
 go install github.com/immanuwell/dget@latest
 ```
 
+## Example of usage
+
+![](dget_screencast.gif)
+
 
 
 
