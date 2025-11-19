@@ -20,7 +20,7 @@ type Config struct {
 
 func main() {
 	var debug = flag.Bool("debug", false, "enable debug output")
-	
+
 	config := parseFlags()
 
 	if config.help {
@@ -168,13 +168,13 @@ func checkDomains(domains []string) {
 	for _, domain := range domains {
 		available := isDomainAvailable(domain)
 		status := "REGISTERED"
-        emoji := "❌"
+		emoji := "❌"
 		if available {
 			status = "AVAILABLE"
-            emoji = "✅"
+			emoji = "✅"
 		}
 		fmt.Printf("%s %-40s %s\n", emoji, domain, status)
-		
+
 		// Small delay to avoid rate limiting
 		time.Sleep(100 * time.Millisecond)
 	}
@@ -202,22 +202,22 @@ func isDomainAvailable(domain string) bool {
 		conn, err := net.DialTimeout("tcp", whoisServer+":43", 5*time.Second)
 		if err == nil {
 			defer conn.Close()
-			
+
 			// Send WHOIS query
 			fmt.Fprintf(conn, "%s\r\n", domain)
-			
+
 			// Read response
 			conn.SetReadDeadline(time.Now().Add(5 * time.Second))
 			scanner := bufio.NewScanner(conn)
 			var response strings.Builder
-			
+
 			for scanner.Scan() {
 				response.WriteString(strings.ToLower(scanner.Text()))
 				response.WriteString("\n")
 			}
-			
+
 			responseText := response.String()
-			
+
 			// Check for common "not found" patterns
 			notFoundPatterns := []string{
 				"no match",
@@ -229,13 +229,13 @@ func isDomainAvailable(domain string) bool {
 				"no matching record",
 				"domain not found",
 			}
-			
+
 			for _, pattern := range notFoundPatterns {
 				if strings.Contains(responseText, pattern) {
 					return true
 				}
 			}
-			
+
 			// Check for common "registered" patterns
 			registeredPatterns := []string{
 				"domain name:",
@@ -243,14 +243,14 @@ func isDomainAvailable(domain string) bool {
 				"creation date:",
 				"registrant",
 			}
-			
+
 			registeredCount := 0
 			for _, pattern := range registeredPatterns {
 				if strings.Contains(responseText, pattern) {
 					registeredCount++
 				}
 			}
-			
+
 			if registeredCount >= 2 {
 				return false
 			}
@@ -266,9 +266,9 @@ func getWhoisServer(domain string) string {
 	if len(parts) < 2 {
 		return ""
 	}
-	
+
 	tld := parts[len(parts)-1]
-	
+
 	// Common WHOIS servers by TLD
 	whoisServers := map[string]string{
 		"com":    "whois.verisign-grs.com",
@@ -296,30 +296,29 @@ func getWhoisServer(domain string) string {
 		"coop":   "whois.nic.coop",
 		"museum": "whois.museum",
 	}
-	
+
 	if server, ok := whoisServers[tld]; ok {
 		return server
 	}
-	
+
 	// Try generic WHOIS server
 	return fmt.Sprintf("whois.nic.%s", tld)
 }
 
 func printUsageExamples() {
 	fmt.Println("                                          ")
-    fmt.Println("        /$$                       /$$     ")
-    fmt.Println("       | $$                      | $$     ")
-    fmt.Println("   /$$$$$$$  /$$$$$$   /$$$$$$  /$$$$$$   ")
-    fmt.Println("  /$$__  $$ /$$__  $$ /$$__  $$|_  $$_/   ")
-    fmt.Println(" | $$  | $$| $$  \\ $$| $$$$$$$$  | $$     ")
-    fmt.Println(" | $$  | $$| $$  | $$| $$_____/  | $$ /$$ ")
-    fmt.Println(" |  $$$$$$$|  $$$$$$$|  $$$$$$$  |  $$$$/ ")
-    fmt.Println("  \\_______/ \\____  $$ \\_______/   \\___/   ") 
-    fmt.Println("            /$$  \\ $$                     ")
-    fmt.Println("           |  $$$$$$/                     ")
-    fmt.Println("            \\______/                      ")
-    fmt.Println("                                          ")
-
+	fmt.Println("        /$$                       /$$     ")
+	fmt.Println("       | $$                      | $$     ")
+	fmt.Println("   /$$$$$$$  /$$$$$$   /$$$$$$  /$$$$$$   ")
+	fmt.Println("  /$$__  $$ /$$__  $$ /$$__  $$|_  $$_/   ")
+	fmt.Println(" | $$  | $$| $$  \\ $$| $$$$$$$$  | $$     ")
+	fmt.Println(" | $$  | $$| $$  | $$| $$_____/  | $$ /$$ ")
+	fmt.Println(" |  $$$$$$$|  $$$$$$$|  $$$$$$$  |  $$$$/ ")
+	fmt.Println("  \\_______/ \\____  $$ \\_______/   \\___/   ")
+	fmt.Println("            /$$  \\ $$                     ")
+	fmt.Println("           |  $$$$$$/                     ")
+	fmt.Println("            \\______/                      ")
+	fmt.Println("                                          ")
 
 	fmt.Println("dget — Domain Availability Checker")
 	fmt.Println("\nNo domains specified. Here are some usage examples:")
@@ -378,4 +377,3 @@ func printHelp() {
 	fmt.Println("    net")
 	fmt.Println("    org")
 }
-
