@@ -19,6 +19,8 @@ type Config struct {
 }
 
 func main() {
+	var debug = flag.Bool("debug", false, "enable debug output")
+	
 	config := parseFlags()
 
 	if config.help {
@@ -34,6 +36,9 @@ func main() {
 	}
 
 	checkDomains(domains)
+	if *debug {
+		fmt.Println(domains)
+	}
 }
 
 func parseFlags() Config {
