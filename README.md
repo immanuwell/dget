@@ -56,11 +56,36 @@ File Formats:
 ```
 
 
-## Installation
+## Install or download compiled binary
+
+### Simply install with `go install`
 
 ```bash
 go install github.com/immanuwell/dget@latest
 ```
+
+### Or you can download compiled binary
+
+Choose your OS and your architecture
+
+**Linux:**
+- [amd64](https://github.com/immanuwell/dget/tree/main/binaries/linux/amd64/dget
+)
+- [arm64](https://github.com/immanuwell/dget/tree/main/binaries/linux/arm64/dget
+)
+
+**MacOS:**
+- [amd64](https://github.com/immanuwell/dget/tree/main/binaries/windows/amd64/dget
+)
+- [arm64](https://github.com/immanuwell/dget/tree/main/binaries/windows/arm64/dget
+)
+
+**Windows:**
+- [amd64](https://github.com/immanuwell/dget/tree/main/binaries/macos/amd64/dget
+)
+- [arm64](https://github.com/immanuwell/dget/tree/main/binaries/macos/arm64/dget
+)
+
 
 ## Example of usage
 
