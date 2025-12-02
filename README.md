@@ -112,4 +112,26 @@ Choose your OS and your architecture
 
 
 
+<!-- 
 
+# 64-bit amd64
+GOOS=linux GOARCH=amd64 go build -o binaries/linux/amd64/dget
+
+# ARM64
+GOOS=linux GOARCH=arm64 go build -o binaries/linux/arm64/dget
+
+
+# 64-bit amd64
+GOOS=windows GOARCH=amd64 go build -o binaries/windows/amd64/dget
+
+# Windows on ARM64 (if supported)
+GOOS=windows GOARCH=arm64 go build -o binaries/windows/arm64/dget
+
+
+# 64-bit Intel
+GOOS=darwin GOARCH=amd64 go build -o binaries/macos/amd64/dget
+
+# ARM64 (Apple Silicon)
+GOOS=darwin GOARCH=arm64 go build -o binaries/macos/arm64/dget
+
+ -->
