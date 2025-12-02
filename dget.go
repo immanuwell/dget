@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -16,6 +17,12 @@ type Config struct {
 	domainsFile string
 	tldsFile    string
 	help        bool
+}
+
+type DomainResult struct {
+	domain    string
+	available bool
+	index     int
 }
 
 func main() {
@@ -35,7 +42,7 @@ func main() {
 		return
 	}
 
-	checkDomains(domains)
+	checkDomainsConcurrent(domains)
 	if *debug {
 		fmt.Println(domains)
 	}
@@ -167,21 +174,65 @@ func unique(slice []string) []string {
 	return result
 }
 
-func checkDomains(domains []string) {
+func checkDomainsConcurrent(domains []string) {
 	fmt.Printf("Checking %d domain(s)...\n\n", len(domains))
 
-	for _, domain := range domains {
-		available := isDomainAvailable(domain)
+	// Create channels for work distribution and results
+	results := make(chan DomainResult, len(domains))
+
+	// Use a WaitGroup to wait for all goroutines to complete
+	var wg sync.WaitGroup
+
+	// Limit concurrent checks to avoid overwhelming the system
+	// Adjust this number based on your needs (50 is a reasonable default)
+	maxConcurrent := 20
+	if len(domains) < maxConcurrent {
+		maxConcurrent = len(domains)
+	}
+
+	semaphore := make(chan struct{}, maxConcurrent)
+
+	// Launch a goroutine for each domain
+	for i, domain := range domains {
+		wg.Add(1)
+		go func(domain string, index int) {
+			defer wg.Done()
+
+			// Acquire semaphore
+			semaphore <- struct{}{}
+			defer func() { <-semaphore }()
+
+			available := isDomainAvailable(domain)
+			results <- DomainResult{
+				domain:    domain,
+				available: available,
+				index:     index,
+			}
+		}(domain, i)
+	}
+
+	// Close results channel when all goroutines are done
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	// Collect results in order
+	resultMap := make(map[int]DomainResult)
+	for result := range results {
+		resultMap[result.index] = result
+	}
+
+	// Print results in original order
+	for i := 0; i < len(domains); i++ {
+		result := resultMap[i]
 		status := "REGISTERED"
 		emoji := "❌"
-		if available {
+		if result.available {
 			status = "AVAILABLE"
 			emoji = "✅"
 		}
-		fmt.Printf("%s %-40s %s\n", emoji, domain, status)
-
-		// Small delay to avoid rate limiting
-		time.Sleep(100 * time.Millisecond)
+		fmt.Printf("%s %-40s %s\n", emoji, result.domain, status)
 	}
 }
 
