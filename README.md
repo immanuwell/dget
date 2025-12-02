@@ -1,6 +1,12 @@
 # dget — Domain Availability Checker
 
 
+## Features:
+
+- it's really fast ⚡️ (and you can make it even faster by changing `maxConcurrent` (which is 50 by default))
+- it uses 3 methods to check is this domain already registered (= 3x more reliable)
+
+
 ## Usage
 
 ```bash
