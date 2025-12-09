@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dget | Fast domain availability checker</title>
+  <meta name="description" content="dget is a fast and powerful domain availability checker with rich flags, bulk lookups, and ready-to-run binaries for every OS." />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
+  <style>
+    :root {
+      --bg: #0b1021;
+      --panel: rgba(255, 255, 255, 0.04);
+      --accent: #6cf2d2;
+      --accent-2: #6fd1ff;
+      --text: #e5ecff;
+      --muted: #9fb3d1;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(111, 209, 255, 0.12), transparent 25%),
+                  radial-gradient(circle at 80% 10%, rgba(108, 242, 210, 0.12), transparent 22%),
+                  radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.07), transparent 30%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 18px 64px;
+    }
+
+    .shell {
+      width: min(1100px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    header {
+      padding: 32px 36px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    header .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      font-size: 20px;
+    }
+
+    header .spark {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 0 8px rgba(108, 242, 210, 0.16), 0 8px 24px rgba(111, 209, 255, 0.35);
+    }
+
+    .pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    main {
+      width: 1100px;
+      padding: 18px 36px 32px;
+      /* display: flex; */
+      /* justify-content: center; */
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .title {
+      font-size: clamp(30px, 5vw, 40px);
+      margin: 0 0 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin: 0 0 18px;
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(108, 242, 210, 0.14), rgba(111, 209, 255, 0.14));
+      transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.16);
+      background: linear-gradient(135deg, rgba(108, 242, 210, 0.2), rgba(111, 209, 255, 0.2));
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+
+    .feature {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .feature .dot {
+      width: 10px;
+      height: 10px;
+      margin-top: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 0 6px rgba(108, 242, 210, 0.14);
+      flex-shrink: 0;
+    }
+
+    code, pre {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      color: var(--text);
+    }
+
+    pre {
+      background: #0c142d;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin: 0;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .stat strong {
+      font-size: 18px;
+    }
+
+    .stat span {
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 16px 36px 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 640px) {
+      header, main, footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .shell {
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="shell">
+      <header>
+        <div class="brand">
+          <span class="spark" aria-hidden="true"></span>
+          <span>dget</span>
+        </div>
+        <span class="pill">Fast domain availability checker · MIT License</span>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <h1 class="title">Check domains fast.</h1>
+            <p class="lead">
+              dget is an open-source, cross-platform domain availability checker built in Go.
+              It delivers fast lookups, bulk checks, and a flag-rich CLI so you can fit
+              domain intelligence into any workflow.
+            </p>
+            <div class="cta">
+              <a class="btn" href="https://github.com/immanuwell/dget" target="_blank" rel="noreferrer">View on GitHub</a>
+              <a class="btn secondary" href="#install">Install options</a>
+            </div>
+          </div>
+          <div class="card">
+            <pre><code># Quick start
+dget example.com
+
+# Check all domains from file with .com TLD
+dget --domains-file domains-file.txt --tld com
+
+# Check all combinations from both files
+# (short flags: -df and -tf)
+dget -df domains-file.txt -tf tlds-file.txt
+
+# Install
+go install github.com/immanuwell/dget@latest</code></pre>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="features">
+            <div class="feature" v-for="(feature, i) in features" :key="i">
+              <span class="dot" aria-hidden="true"></span>
+              <div>
+                <strong>{{ feature.title }}</strong>
+                <p class="lead" style="margin:6px 0 0; font-size:14px; line-height:1.5;">{{ feature.copy }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="columns" id="install">
+          <div class="card">
+            <h3 style="margin-top:0; margin-bottom:8px;">Install anywhere</h3>
+            <p class="lead" style="margin-top:0;">
+              <!-- Grab a prebuilt binary for macOS, Linux, or Windows, or build from source with Go in seconds. -->
+               You can simply install dget using Go's install command:
+            </p>
+            <pre><code>
+# Go install
+go install github.com/immanuwell/dget@latest</code></pre>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0; margin-bottom:8px;">Why pick dget</h3>
+            <ul style="padding-left:18px; color:var(--muted); margin:0; line-height:1.7;">
+              <li>Optimized lookups for high-volume domain scouting</li>
+              <li>Bulk checking from lists or piped input</li>
+              <li>Flag-packed CLI for verbosity, TLD control and more</li>
+              <li>Runs on any OS with zero setup</li>
+              <li>MIT-licensed, hackable Go codebase you can extend</li>
+            </ul><br>
+            <!-- <div class="stat" style="margin-top:14px;">
+              <div>
+                <strong>{{ stats.speed }}</strong><br />
+                <span>Approximate domains checked per second on typical broadband</span>
+              </div>
+            </div> -->
+            <div class="stat">
+              <div>
+                <strong>{{ stats.flags }}</strong><br />
+                <span>Flags to tailor output, retries, timeouts, and threads</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <span>Fast. Flexible. Open.</span>
+        <span aria-hidden="true">•</span>
+        <span>domain availability checker, bulk domain checker, Go CLI, cross-platform.</span>
+        <span aria-hidden="true">•</span>
+        <span><a style="text-decoration: none;" href="https://github.com/immanuwell/dget">github.com/immanuwell/dget</a></span>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          stats: {
+            speed: "~10,000+",
+            flags: "Rich flag set"
+          },
+          features: [
+            { title: "It's fast", copy: "Parallel lookups with smart retries keep domain checks snappy, even when scanning large TLD lists or bulk files." },
+            { title: "Bulk-native", copy: "Feed it a file or pipe domains in; dget eats batches for breakfast and keeps output clean and predictable." },
+            { title: "Flag-rich control", copy: "dget has a lot of flags, and you can combine flags in a lot of combinations." },
+            { title: "Works everywhere", copy: "Cross-platform binaries plus `go install` make dget run on macOS, Linux, or Windows without extra deps." },
+            { title: "TLD aware", copy: "Ship your own TLD files, stick with the built-ins, or mix lists to explore niche extensions fast." },
+            { title: "Open and extensible", copy: "MIT-licensed Go code means you can audit, extend, or integrate dget into custom automation with ease." }
+          ]
+        };
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>
