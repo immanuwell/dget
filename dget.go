@@ -221,11 +221,6 @@ func checkDomainsConcurrent(domains []string) {
 	resultMap := make(map[int]DomainResult)
 	for result := range results {
 		resultMap[result.index] = result
-	}
-
-	// Print results in original order
-	for i := 0; i < len(domains); i++ {
-		result := resultMap[i]
 		status := "REGISTERED"
 		emoji := "❌"
 		if result.available {
@@ -234,6 +229,18 @@ func checkDomainsConcurrent(domains []string) {
 		}
 		fmt.Printf("%s %-40s %s\n", emoji, result.domain, status)
 	}
+
+	// Print results in original order
+	// for i := 0; i < len(domains); i++ {
+	// 	result := resultMap[i]
+	// 	status := "REGISTERED"
+	// 	emoji := "❌"
+	// 	if result.available {
+	// 		status = "AVAILABLE"
+	// 		emoji = "✅"
+	// 	}
+	// 	fmt.Printf("%s %-40s %s\n", emoji, result.domain, status)
+	// }
 }
 
 func isDomainAvailable(domain string) bool {
