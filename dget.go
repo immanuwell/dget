@@ -185,7 +185,7 @@ func checkDomainsConcurrent(domains []string) {
 
 	// Limit concurrent checks to avoid overwhelming the system
 	// Adjust this number based on your needs (50 is a reasonable default)
-	maxConcurrent := 50
+	maxConcurrent := 70
 	if len(domains) < maxConcurrent {
 		maxConcurrent = len(domains)
 	}
