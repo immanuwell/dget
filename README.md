@@ -75,22 +75,16 @@ go install github.com/immanuwell/dget@latest
 Choose your OS and your architecture
 
 **Linux:**
-- [amd64](https://github.com/immanuwell/dget/tree/main/binaries/linux/amd64/dget
-)
-- [arm64](https://github.com/immanuwell/dget/tree/main/binaries/linux/arm64/dget
-)
+- [amd64](https://github.com/immanuwell/dget/releases/tag/v1.0.0)
+- [arm64](https://github.com/immanuwell/dget/releases/tag/v1.0.0)
 
 **MacOS:**
-- [amd64](https://github.com/immanuwell/dget/tree/main/binaries/windows/amd64/dget
-)
-- [arm64](https://github.com/immanuwell/dget/tree/main/binaries/windows/arm64/dget
-)
+- [amd64](https://github.com/immanuwell/dget/releases/tag/v1.0.0)
+- [arm64](https://github.com/immanuwell/dget/releases/tag/v1.0.0)
 
 **Windows:**
-- [amd64](https://github.com/immanuwell/dget/tree/main/binaries/macos/amd64/dget
-)
-- [arm64](https://github.com/immanuwell/dget/tree/main/binaries/macos/arm64/dget
-)
+- [amd64](https://github.com/immanuwell/dget/releases/tag/v1.0.0)
+- [arm64](https://github.com/immanuwell/dget/releases/tag/v1.0.0)
 
 
 ## Example of usage
